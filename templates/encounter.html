@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Encounter</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold">Generated Encounter</h1>
+            <a href="{{ url_for('index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                Generate New
+            </a>
+        </div>
+
+        {% for monster in encounter.monsters %}
+            <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-8">
+                <h2 class="text-2xl font-bold mb-4">Monster {{ loop.index }}: {{ monster.name }}</h2>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-2">Description</h3>
+                    <p class="text-gray-700">{{ monster.description }}</p>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-2">Image</h3>
+                    {% if monster.image_url %}
+                        <div class="flex justify-center">
+                            <img src="{{ monster.image_url }}" alt="Image of {{ monster.name }}" class="max-w-xs h-auto rounded shadow-md">
+                        </div>
+                    {% else %}
+                        <p class="text-gray-500">No image available for this monster.</p>
+                    {% endif %}
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-2">Stats</h3>
+                    <table class="table-auto w-full text-left bg-gray-100 rounded shadow-md">
+                        <tbody class="divide-y divide-gray-300">
+                            <tr>
+                                <td class="px-4 py-2 font-semibold">Armor Class (AC)</td>
+                                <td class="px-4 py-2">{{ monster.stats.AC }}</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold">Hit Points (HP)</td>
+                                <td class="px-4 py-2">{{ monster.stats.HP }}</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold">Speed</td>
+                                <td class="px-4 py-2">{{ monster.stats.Speed }}</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-2 font-semibold">Initiative</td>
+                                <td class="px-4 py-2">{{ monster.stats.Initiative }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Attacks</h4>
+                    <ul class="list-disc list-inside">
+                        {% for attack in monster.stats.Attacks %}
+                            <li class="text-gray-700"><strong>{{ attack.name }}</strong>: {{ attack.damage }} ({{ attack.range }})</li>
+                        {% endfor %}
+                    </ul>
+
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Saving Throws</h4>
+                    <ul class="list-disc list-inside">
+                        {% for save, value in monster.stats["Saving Throws"].items() %}
+                            <li class="text-gray-700"><strong>{{ save }}</strong>: {{ value }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Skills</h4>
+                    <ul class="list-disc list-inside">
+                        {% for skill, value in monster.stats.Skills.items() %}
+                            <li class="text-gray-700"><strong>{{ skill }}</strong>: {{ value }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-2">Special Abilities</h3>
+                    <ul class="list-disc list-inside">
+                        {% for ability in monster.abilities %}
+                            <li class="text-gray-700"><strong>{{ ability.name }}</strong>: {{ ability.effect }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-2">Tactics</h3>
+                    <p class="text-gray-700">{{ monster.tactics }}</p>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-2">Loot</h3>
+                    <ul class="list-disc list-inside">
+                        {% for item in monster.loot %}
+                            <li class="text-gray-700">{{ item.description }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
